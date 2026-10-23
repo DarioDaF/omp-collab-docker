@@ -1,0 +1,4 @@
+collab:
+  relayUrl: ws://localhost:8080
+  webUrl: http://localhost:8080
+  autoStart: control

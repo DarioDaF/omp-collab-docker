@@ -1,0 +1,32 @@
+config-version: 8
+
+server:
+  host: "" # Listen to all interfaces
+  port: 8317 # Default port
+
+management:
+  # Disable completely the web UI management since this service is accessible by the agent
+  allow-remote: false
+  secret-key: ""
+  disable-control-panel: true
+
+access:
+  api-keys: [] # Unauthenticated
+
+oauth:
+  auth-dir: /root/.cli-proxy-api
+
+# Force store behaviour to false
+requests:
+  payload:
+    override:
+      - models:
+          - name: "*"
+            protocol: codex
+        params:
+          store: false
+      - models:
+          - name: "*"
+            protocol: openai
+        params:
+          store: false

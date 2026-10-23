@@ -1,0 +1,7 @@
+providers:
+  cli-proxy:
+    baseUrl: http://llm-proxy.internal:8317/v1
+    api: openai-responses
+    auth: none
+    discovery:
+      type: openai-models-list

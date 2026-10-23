@@ -1,0 +1,43 @@
+services:
+  llm-proxy:
+    image: eceasy/cli-proxy-api:latest
+    volumes:
+      - ./llm-proxy/config.yaml:/CLIProxyAPI/config.yaml:ro
+      - ./data/llm-proxy-auths:/root/.cli-proxy-api
+    networks:
+      llm-net:
+        aliases:
+          - llm-proxy.internal
+    restart: unless-stopped
+  web-proxy:
+    build: ./web-proxy
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      web-net:
+        aliases:
+          - web-proxy.internal
+    restart: unless-stopped
+  omp-agent:
+    build: ./omp-agent
+    #tty: true
+    #stdin_open: true
+    working_dir: /workspace
+    command: ["sleep", "infinity"]
+    environment:
+      HOME: /root
+    volumes:
+      - ./data/agent:/root/.omp/agent
+      - workspace:/workspace
+    depends_on:
+      - llm-proxy
+      - web-proxy
+    networks:
+      llm-net:
+      web-net:
+    restart: unless-stopped
+networks:
+  llm-net:
+  web-net:
+volumes:
+  workspace:
